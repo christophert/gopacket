@@ -1410,6 +1410,13 @@ func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
 
 func (m *Dot11MgmtAction) LayerType() gopacket.LayerType  { return LayerTypeDot11MgmtAction }
 func (m *Dot11MgmtAction) CanDecode() gopacket.LayerClass { return LayerTypeDot11MgmtAction }
+func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
+    m.CategoryCode = data[0];
+    m.PublicAction = data[1];
+    m.DialogToken = data[2];
+    m.TagNumber = data[3];
+    m.TagLength = data[4];
+}
 
 type Dot11MgmtActionNoAck struct {
 	Dot11Mgmt
