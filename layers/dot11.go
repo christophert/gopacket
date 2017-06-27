@@ -1415,7 +1415,9 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
 	m.DialogToken = data[2]
     m.TagNumber = data[3]
     m.TagLength = data[4]
-	return m.Dot11Mgmt.DecodeFromBytes(data, df)
+    m.Payload = data[5:]
+
+    return nil;
 }
 
 type Dot11MgmtActionNoAck struct {
