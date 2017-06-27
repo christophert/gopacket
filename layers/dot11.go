@@ -1395,12 +1395,9 @@ func (m Dot11MgmtDeauthentication) SerializeTo(b gopacket.SerializeBuffer, opts 
 
 type Dot11MgmtAction struct {
 	Dot11Mgmt
-    CategoryCode uint8
-    PublicAction uint8
-    DialogToken uint8
-    TagNumber uint8
-    TagLength uint8
-    AdvProto uint16
+	CategoryCode uint8
+	PublicAction uint8
+	DialogToken  uint8
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
@@ -1411,12 +1408,10 @@ func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
 func (m *Dot11MgmtAction) LayerType() gopacket.LayerType  { return LayerTypeDot11MgmtAction }
 func (m *Dot11MgmtAction) CanDecode() gopacket.LayerClass { return LayerTypeDot11MgmtAction }
 func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
-    m.CategoryCode = data[0];
-    m.PublicAction = data[1];
-    m.DialogToken = data[2];
-    m.TagNumber = data[3];
-    m.TagLength = data[4];
-    return nil;
+	m.CategoryCode = data[0]
+	m.PublicAction = data[1]
+	m.DialogToken = data[2]
+	return nil
 }
 
 type Dot11MgmtActionNoAck struct {
