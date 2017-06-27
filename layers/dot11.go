@@ -1411,7 +1411,8 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
 	m.CategoryCode = data[0]
 	m.PublicAction = data[1]
 	m.DialogToken = data[2]
-	return nil
+
+    return m.Dot11MgmtAction.DecodeFromBytes(data, df)
 }
 
 type Dot11MgmtActionNoAck struct {
