@@ -1395,6 +1395,12 @@ func (m Dot11MgmtDeauthentication) SerializeTo(b gopacket.SerializeBuffer, opts 
 
 type Dot11MgmtAction struct {
 	Dot11Mgmt
+    CategoryCode uint8
+    PublicAction uint8
+    DialogToken uint8
+    TagNumber uint8
+    TagLength uint8
+    AdvProto uint16
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
