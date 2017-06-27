@@ -1398,6 +1398,8 @@ type Dot11MgmtAction struct {
 	CategoryCode uint8
 	PublicAction uint8
 	DialogToken  uint8
+    TagNumber uint8
+    TagLength uint8
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
@@ -1411,7 +1413,8 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
 	m.CategoryCode = data[0]
 	m.PublicAction = data[1]
 	m.DialogToken = data[2]
-    m.Payload = data[3:]
+    m.TagNumber = data[3]
+    m.TagLength = data[4]
 	return m.Dot11Mgmt.DecodeFromBytes(data, df)
 }
 
