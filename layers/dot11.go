@@ -1421,7 +1421,7 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
     return nil;
 }
 
-func (m Dot11MgmtAuthentication) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
+func (m Dot11MgmtAction) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
 	buf, err := b.PrependBytes(5)
 
 	if err != nil {
