@@ -1400,6 +1400,7 @@ type Dot11MgmtAction struct {
 	DialogToken  uint8
     TagNumber uint8
     TagLength uint8
+    Payload []byte
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
@@ -1418,6 +1419,29 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
     m.Payload = data[5:]
 
     return nil;
+}
+
+func (m Dot11MgmtAuthentication) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
+	buf, err := b.PrependBytes(5)
+
+	if err != nil {
+		return err
+	}
+
+    buf[0] = m.CategoryCode
+    buf[1] = m.PublicAction
+    buf[2] = m.DialogToken
+    buf[3] = m.TagNumber
+    buf[4] = m.TagLength
+
+    ex, err := b.AppendBytes(len(m.Payload))
+    if err != nil {
+        return err
+    }
+
+    copy(ex, m.Payload)
+
+	return nil
 }
 
 type Dot11MgmtActionNoAck struct {
