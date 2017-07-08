@@ -70,7 +70,7 @@ func (e *EAP) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
 // See the docs for gopacket.SerializableLayer for more info.
 func (e *EAP) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
 	if opts.FixLengths {
-		e.Length = uint16(len(e.TypeData) + 1)
+		e.Length = uint16(len(e.TypeData) + 4)
 	}
 	size := len(e.TypeData) + 4
 	if size > 4 {
