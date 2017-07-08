@@ -1395,6 +1395,12 @@ func (m Dot11MgmtDeauthentication) SerializeTo(b gopacket.SerializeBuffer, opts 
 
 type Dot11MgmtAction struct {
 	Dot11Mgmt
+	CategoryCode uint8
+	PublicAction uint8
+	DialogToken  uint8
+    TagNumber uint8
+    TagLength uint8
+    Payload []byte
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
@@ -1404,6 +1410,39 @@ func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
 
 func (m *Dot11MgmtAction) LayerType() gopacket.LayerType  { return LayerTypeDot11MgmtAction }
 func (m *Dot11MgmtAction) CanDecode() gopacket.LayerClass { return LayerTypeDot11MgmtAction }
+func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
+	m.CategoryCode = data[0]
+	m.PublicAction = data[1]
+	m.DialogToken = data[2]
+    m.TagNumber = data[3]
+    m.TagLength = data[4]
+    m.Payload = data[5:]
+
+    return nil;
+}
+
+func (m Dot11MgmtAction) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
+	buf, err := b.PrependBytes(5)
+
+	if err != nil {
+		return err
+	}
+
+    buf[0] = m.CategoryCode
+    buf[1] = m.PublicAction
+    buf[2] = m.DialogToken
+    buf[3] = m.TagNumber
+    buf[4] = m.TagLength
+
+    ex, err := b.AppendBytes(len(m.Payload))
+    if err != nil {
+        return err
+    }
+
+    copy(ex, m.Payload)
+
+	return nil
+}
 
 type Dot11MgmtActionNoAck struct {
 	Dot11Mgmt
