@@ -1398,9 +1398,9 @@ type Dot11MgmtAction struct {
 	CategoryCode uint8
 	PublicAction uint8
 	DialogToken  uint8
-    TagNumber uint8
-    TagLength uint8
-    Payload []byte
+	TagNumber    uint8
+	TagLength    uint8
+	Payload      []byte
 }
 
 func decodeDot11MgmtAction(data []byte, p gopacket.PacketBuilder) error {
@@ -1414,11 +1414,11 @@ func (m *Dot11MgmtAction) DecodeFromBytes(data []byte, df gopacket.DecodeFeedbac
 	m.CategoryCode = data[0]
 	m.PublicAction = data[1]
 	m.DialogToken = data[2]
-    m.TagNumber = data[3]
-    m.TagLength = data[4]
-    m.Payload = data[5:]
+	m.TagNumber = data[3]
+	m.TagLength = data[4]
+	m.Payload = data[5:]
 
-    return nil;
+	return nil
 }
 
 func (m Dot11MgmtAction) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
@@ -1428,18 +1428,79 @@ func (m Dot11MgmtAction) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.S
 		return err
 	}
 
-    buf[0] = m.CategoryCode
-    buf[1] = m.PublicAction
-    buf[2] = m.DialogToken
-    buf[3] = m.TagNumber
-    buf[4] = m.TagLength
+	buf[0] = m.CategoryCode
+	buf[1] = m.PublicAction
+	buf[2] = m.DialogToken
+	buf[3] = m.TagNumber
+	buf[4] = m.TagLength
 
-    ex, err := b.AppendBytes(len(m.Payload))
-    if err != nil {
-        return err
-    }
+	ex, err := b.AppendBytes(len(m.Payload))
+	if err != nil {
+		return err
+	}
 
-    copy(ex, m.Payload)
+	copy(ex, m.Payload)
+
+	return nil
+}
+
+type Dot11MgmtActionGASResp struct {
+	Dot11Mgmt
+	CategoryCode     uint8
+	PublicAction     uint8
+	DialogToken      uint8
+	StatusCode       uint16
+	GASComebackDelay uint16
+	TagNumber        uint8
+	TagLength        uint8
+	Payload          []byte
+}
+
+func decodeDot11MgmtActionGASResp(data []byte, p gopacket.PacketBuilder) error {
+	d := &Dot11MgmtActionGASResp{}
+	return decodingLayerDecoder(d, data, p)
+}
+
+func (m *Dot11MgmtActionGASResp) LayerType() gopacket.LayerType {
+	return LayerTypeDot11MgmtActionGASResp
+}
+func (m *Dot11MgmtActionGASResp) CanDecode() gopacket.LayerClass {
+	return LayerTypeDot11MgmtActionGASResp
+}
+func (m *Dot11MgmtActionGASResp) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
+	m.CategoryCode = data[0]
+	m.PublicAction = data[1]
+	m.DialogToken = data[2]
+	m.StatusCode = binary.LittleEndian.Uint16(data[3:5])
+	m.GASComebackDelay = binary.LittleEndian.Uint16(data[5:7])
+	m.TagNumber = data[7]
+	m.TagLength = data[8]
+	m.Payload = data[9:]
+
+	return nil
+}
+
+func (m Dot11MgmtActionGASResp) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
+	buf, err := b.PrependBytes(9)
+
+	if err != nil {
+		return err
+	}
+
+	buf[0] = m.CategoryCode
+	buf[1] = m.PublicAction
+	buf[2] = m.DialogToken
+	binary.LittleEndian.PutUint16(buf[3:5], m.StatusCode)
+	binary.LittleEndian.PutUint16(buf[5:7], m.GASComebackDelay)
+	buf[7] = m.TagNumber
+	buf[8] = m.TagLength
+
+	ex, err := b.AppendBytes(len(m.Payload))
+	if err != nil {
+		return err
+	}
+
+	copy(ex, m.Payload)
 
 	return nil
 }
