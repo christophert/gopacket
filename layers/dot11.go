@@ -1462,10 +1462,10 @@ func decodeDot11MgmtActionGASResp(data []byte, p gopacket.PacketBuilder) error {
 }
 
 func (m *Dot11MgmtActionGASResp) LayerType() gopacket.LayerType {
-	return LayerTypeDot11MgmtActionGASResp
+	return LayerTypeDot11MgmtAction
 }
 func (m *Dot11MgmtActionGASResp) CanDecode() gopacket.LayerClass {
-	return LayerTypeDot11MgmtActionGASResp
+	return LayerTypeDot11MgmtAction
 }
 func (m *Dot11MgmtActionGASResp) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error {
 	m.CategoryCode = data[0]
